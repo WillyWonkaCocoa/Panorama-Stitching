@@ -3,6 +3,9 @@ from skimage.color import rgb2gray
 from scipy.signal import convolve2d
 from scipy.ndimage import rank_filter
 from scipy.stats import norm
+import cv2
+import matplotlib.pyplot as plt
+from random import randrange
 
 
 def dist2(x, c):
@@ -236,13 +239,21 @@ if __name__ == '__main__':
     Gx, Gy = gen_dgauss(3.2)
     print(f'Gx.shape: {Gx.shape}')
     I = np.random.random((480, 640, 3)) * 255
+    img = cv2.imread('uttower_left.JPG')
+    img1 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.imread('uttower_right.JPG')
+    img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     circles = np.vstack([
         np.random.randint(1, 480, 25),
         np.random.randint(1, 640, 25),
         15 * np.random.random(25)]).T
 
-    sift_arr = find_sift(I, circles)
+    sift_arr = find_sift(img1, circles)
     print(sift_arr.shape)
-
-    cim, r, c = harris(I, 3.2, thresh=5, radius=3)
-    print(f'cim.shape: {cim.shape}')
+    
+    cim1, r1, c1 = harris(img1, 3.2, thresh=5, radius=3)
+    cim2, r2, c2 = harris(img2, 3.2, thresh=5, radius=3)
+    
+    print(cim1)
+    print(cim2)
+    print(f'cim1.shape: {cim1.shape}')
